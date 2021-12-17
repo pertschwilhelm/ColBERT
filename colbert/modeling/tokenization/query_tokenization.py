@@ -14,12 +14,12 @@ class QueryTokenizer():
         self.query_maxlen = config.query_maxlen
         self.background_maxlen = 512 - self.query_maxlen + 1  # FIXME: Make this configurable
 
-        self.Q_marker_token, self.Q_marker_token_id = '[Q]', self.tok.convert_tokens_to_ids('[unused0]')
+        self.Q_marker_token, self.Q_marker_token_id = '[Q]', self.tok.convert_tokens_to_ids('madeupword0001')
         self.cls_token, self.cls_token_id = self.tok.cls_token, self.tok.cls_token_id
         self.sep_token, self.sep_token_id = self.tok.sep_token, self.tok.sep_token_id
         self.mask_token, self.mask_token_id = self.tok.mask_token, self.tok.mask_token_id
 
-        assert self.Q_marker_token_id == 1 and self.mask_token_id == 103
+        assert self.Q_marker_token_id == 50262 and self.mask_token_id == 50264
         self.used = False
 
     def tokenize(self, batch_text, add_special_tokens=False):

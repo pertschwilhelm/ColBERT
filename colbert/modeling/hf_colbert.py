@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-from transformers import BertPreTrainedModel, BertModel, AutoTokenizer
+from transformers import BertPreTrainedModel, BertModel, AutoTokenizer, RobertaModel
 from colbert.utils.utils import torch_load_dnn
 
 
@@ -16,7 +16,7 @@ class HF_ColBERT(BertPreTrainedModel):
         super().__init__(config)
 
         self.dim = colbert_config.dim
-        self.bert = BertModel(config)
+        self.bert = RobertaModel(config)
         self.linear = nn.Linear(config.hidden_size, colbert_config.dim, bias=False)
 
         # if colbert_config.relu:
@@ -32,7 +32,7 @@ class HF_ColBERT(BertPreTrainedModel):
     def from_pretrained(cls, name_or_path, colbert_config):
         if name_or_path.endswith('.dnn'):
             dnn = torch_load_dnn(name_or_path)
-            base = dnn.get('arguments', {}).get('model', 'bert-base-uncased')
+            base = dnn.get('arguments', {}).get('model', 'microsoft/codebert-base')
 
             obj = super().from_pretrained(base, state_dict=dnn['model_state_dict'], colbert_config=colbert_config)
             obj.base = base
@@ -48,7 +48,7 @@ class HF_ColBERT(BertPreTrainedModel):
     def raw_tokenizer_from_pretrained(name_or_path):
         if name_or_path.endswith('.dnn'):
             dnn = torch_load_dnn(name_or_path)
-            base = dnn.get('arguments', {}).get('model', 'bert-base-uncased')
+            base = dnn.get('arguments', {}).get('model', 'microsoft/codebert-base')
 
             obj = AutoTokenizer.from_pretrained(base)
             obj.base = base
