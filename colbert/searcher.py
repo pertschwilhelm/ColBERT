@@ -23,8 +23,9 @@ class Searcher:
 
         initial_config = ColBERTConfig.from_existing(config, Run().config)
 
-        default_index_root = initial_config.index_root_
-        self.index = os.path.join(default_index_root, index)
+        # default_index_root = initial_config.index_root_
+        self.index = config.index_path
+        # self.index = os.path.join(default_index_root, index)
         self.index_config = ColBERTConfig.load_from_index(self.index)
 
         self.checkpoint = checkpoint or self.index_config.checkpoint
